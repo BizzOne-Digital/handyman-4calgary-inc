@@ -1,0 +1,154 @@
+{
+  "generator": "Built-in image_gen",
+  "purpose": "Illustrative Calgary renovation and contracting website imagery",
+  "promptStyle": "Single professional landscape 3:2 photograph, premium realistic architectural/workmanship photography, neutral black white gray finishes with natural warm timber, plausible geometry, soft natural lighting; no text, logos, watermark, collage, UI, borders or labels.",
+  "images": [
+    {
+      "key": "kitchenPendants",
+      "source": "C:\\Users\\PC\\.codex\\generated_images\\01a14ae0-cf84-75b3-93c0-d89680d76a99\\exec-aa5110a9-f8c0-496a-b2e1-3279017eb7a5.png",
+      "filename": "kitchen-pendants.webp",
+      "scene": "Wide contemporary Calgary kitchen, white cabinetry, long stone island with three black stools, black pendant lights, warm oak floors, living room visible beyond, large windows.",
+      "url": "/images/kitchen-pendants.webp"
+    },
+    {
+      "key": "kitchenWhite",
+      "source": "C:\\Users\\PC\\.codex\\generated_images\\01a14ae0-cf84-75b3-93c0-d89680d76a99\\exec-d361b898-a8a2-45f5-96c1-b0651b1df9aa.png",
+      "filename": "kitchen-white.webp",
+      "scene": "Wide white renovated Canadian kitchen with large island, pendant lights, stainless steel range, elegant restrained cabinetry and realistic functional layout.",
+      "url": "/images/kitchen-white.webp"
+    },
+    {
+      "key": "kitchenCounter",
+      "source": "C:\\Users\\PC\\.codex\\generated_images\\01a14ae0-cf84-75b3-93c0-d89680d76a99\\exec-f5435664-acf7-4cd3-85aa-2a2e98494e6f.png",
+      "filename": "kitchen-counter.webp",
+      "scene": "Architectural close view of renovated kitchen, white upper cabinets, light stone countertop, warm oak lower cabinetry, immaculate installed backsplash.",
+      "url": "/images/kitchen-counter.webp"
+    },
+    {
+      "key": "warehouse",
+      "source": "C:\\Users\\PC\\.codex\\generated_images\\01a14ae0-cf84-75b3-93c0-d89680d76a99\\exec-d66bc4af-13c2-4865-b8e6-443369c7f545.png",
+      "filename": "warehouse.webp",
+      "scene": "Wide clean commercial warehouse interior, high steel ceiling, polished concrete floor, organized storage racks along sides, daylight, empty central floor.",
+      "url": "/images/warehouse.webp"
+    },
+    {
+      "key": "warehouseAisle",
+      "source": "C:\\Users\\PC\\.codex\\generated_images\\01a14ae0-cf84-75b3-93c0-d89680d76a99\\exec-dc237eae-6d42-4c44-99a4-baa35ce34c1a.png",
+      "filename": "warehouse-aisle.webp",
+      "scene": "Industrial warehouse aisle, tall orderly storage racking, concrete floor, functional overhead lighting, clean maintained building.",
+      "url": "/images/warehouse-aisle.webp"
+    },
+    {
+      "key": "officeLoft",
+      "source": "C:\\Users\\PC\\.codex\\generated_images\\01a14ae0-cf84-75b3-93c0-d89680d76a99\\exec-b9763095-eaa4-4698-ba7f-e7a29aa7861e.png",
+      "filename": "office-loft.webp",
+      "scene": "Renovated open commercial office, concrete ceiling, meeting table, large windows, glass partitions, restrained neutral Canadian interior.",
+      "url": "/images/office-loft.webp"
+    },
+    {
+      "key": "officeCorridor",
+      "source": "C:\\Users\\PC\\.codex\\generated_images\\01a14ae0-cf84-75b3-93c0-d89680d76a99\\exec-7044f62c-0e85-4403-9f9e-945acd55b5bd.png",
+      "filename": "office-corridor.webp",
+      "scene": "Modern renovated commercial office corridor with glass partitions, polished floor, clean drywall and ceiling finishing, architectural perspective.",
+      "url": "/images/office-corridor.webp"
+    },
+    {
+      "key": "officeLounge",
+      "source": "C:\\Users\\PC\\.codex\\generated_images\\01a14ae0-cf84-75b3-93c0-d89680d76a99\\exec-5d149668-de37-42aa-bf51-4defec537800.png",
+      "filename": "office-lounge.webp",
+      "scene": "Bright office lounge with modern chairs, timber shelving, finished neutral walls, sophisticated inviting professional interior.",
+      "url": "/images/office-lounge.webp"
+    },
+    {
+      "key": "retailStore",
+      "source": "C:\\Users\\PC\\.codex\\generated_images\\01a14ae0-cf84-75b3-93c0-d89680d76a99\\exec-69709072-4908-4dd1-8bf0-aa43b1296958.png",
+      "filename": "retail-store.webp",
+      "scene": "Newly fitted boutique clothing retail interior, wall shelving, neat display rails, attractive pendant lighting, wood and white finishes.",
+      "url": "/images/retail-store.webp"
+    },
+    {
+      "key": "livingRoom",
+      "source": "C:\\Users\\PC\\.codex\\generated_images\\01a14ae0-cf84-75b3-93c0-d89680d76a99\\exec-80306fa5-fd52-422f-8fc2-f03b0f90611e.png",
+      "filename": "living-room.webp",
+      "scene": "Finished Canadian basement living room, comfortable neutral sofa, recessed ceiling lights, modest high basement windows, clean drywall, oak floor, welcoming realistic space.",
+      "url": "/images/living-room.webp"
+    },
+    {
+      "key": "livingRoomBright",
+      "source": "C:\\Users\\PC\\.codex\\generated_images\\01a14ae0-cf84-75b3-93c0-d89680d76a99\\exec-5e5ef601-6fad-4990-9101-6e2b9f2609fd.png",
+      "filename": "living-room-bright.webp",
+      "scene": "Bright renovated finished basement living space, neutral sofas, plants, daylight from basement windows, professionally finished walls and recessed lights.",
+      "url": "/images/living-room-bright.webp"
+    },
+    {
+      "key": "loungeCorner",
+      "source": "C:\\Users\\PC\\.codex\\generated_images\\01a14ae0-cf84-75b3-93c0-d89680d76a99\\exec-58829a0b-0a5b-449b-8327-cf1d5f00a0a4.png",
+      "filename": "lounge-corner.webp",
+      "scene": "Finished residential room corner, crisp white walls, warm wood flooring, mustard yellow armchair, refined trim, natural window light.",
+      "url": "/images/lounge-corner.webp"
+    },
+    {
+      "key": "openPlan",
+      "source": "C:\\Users\\PC\\.codex\\generated_images\\01a14ae0-cf84-75b3-93c0-d89680d76a99\\exec-47ab0524-162b-4eaf-ab6e-947c5469488e.png",
+      "filename": "open-plan.webp",
+      "scene": "Open-plan modern Canadian home living room with large windows, tasteful wood accent wall, neutral furnishings, architectural renovation photography.",
+      "url": "/images/open-plan.webp"
+    },
+    {
+      "key": "bathroomGlass",
+      "source": "C:\\Users\\PC\\.codex\\generated_images\\01a14ae0-cf84-75b3-93c0-d89680d76a99\\exec-0dfee2f8-b639-4379-9619-18dc0e9e209b.png",
+      "filename": "bathroom-glass.webp",
+      "scene": "Renovated contemporary bathroom, clear glass walk-in shower enclosure, double vanity, neutral porcelain tile, realistic functional plumbing and fixtures.",
+      "url": "/images/bathroom-glass.webp"
+    },
+    {
+      "key": "bathroomTub",
+      "source": "C:\\Users\\PC\\.codex\\generated_images\\01a14ae0-cf84-75b3-93c0-d89680d76a99\\exec-7d3adefb-24dd-4757-8e75-a4f209b102b1.png",
+      "filename": "bathroom-tub.webp",
+      "scene": "Bright modern renovated bathroom, freestanding white bathtub and vessel sink, natural oak vanity, warm pale tile, realistic interior.",
+      "url": "/images/bathroom-tub.webp"
+    },
+    {
+      "key": "houseExterior",
+      "source": "C:\\Users\\PC\\.codex\\generated_images\\01a14ae0-cf84-75b3-93c0-d89680d76a99\\exec-a5861fef-d255-4dc9-9783-69c4cad4601d.png",
+      "filename": "house-exterior.webp",
+      "scene": "Two-storey Calgary suburban Canadian house with welcoming porch, neat maintenance, autumn trees, daylight, no visible house numbers.",
+      "url": "/images/house-exterior.webp"
+    },
+    {
+      "key": "paintRoller",
+      "source": "C:\\Users\\PC\\.codex\\generated_images\\01a14ae0-cf84-75b3-93c0-d89680d76a99\\exec-d7217437-0014-47d3-a66f-4ce05612d377.png",
+      "filename": "paint-roller.webp",
+      "scene": "Close-up professional painter's hand using a clean paint roller to apply pale blue-gray paint to a white interior wall, realistic tool contact, neat workspace.",
+      "url": "/images/paint-roller.webp"
+    },
+    {
+      "key": "hallwayTrim",
+      "source": "C:\\Users\\PC\\.codex\\generated_images\\01a14ae0-cf84-75b3-93c0-d89680d76a99\\exec-c8aca274-dc30-4518-aaa3-ff7c812b4959.png",
+      "filename": "hallway-trim.webp",
+      "scene": "Bright renovated residential hallway, professionally installed crisp white doors and trim, warm oak flooring, clean interior carpentry detail.",
+      "url": "/images/hallway-trim.webp"
+    },
+    {
+      "key": "carpenter",
+      "source": "C:\\Users\\PC\\.codex\\generated_images\\01a14ae0-cf84-75b3-93c0-d89680d76a99\\exec-1b66830e-0fda-4c15-8d4f-f327d924afb2.png",
+      "filename": "carpenter.webp",
+      "scene": "Construction professional in black plain work shirt and tool belt, seen from side and back, carefully measuring a timber stud with tape measure at a residential renovation site, no logos.",
+      "url": "/images/carpenter.webp"
+    },
+    {
+      "key": "toolBelt",
+      "source": "C:\\Users\\PC\\.codex\\generated_images\\01a14ae0-cf84-75b3-93c0-d89680d76a99\\exec-f873a65b-d0ce-4209-9109-5fb05f2381dd.png",
+      "filename": "tool-belt.webp",
+      "scene": "Photorealistic close-up worn leather construction tool belt holding hammer, tape measure and hand tools against a neutral renovation workshop background, practical workmanship.",
+      "url": "/images/tool-belt.webp"
+    },
+    {
+      "key": "plans",
+      "source": "C:\\Users\\PC\\.codex\\generated_images\\01a14ae0-cf84-75b3-93c0-d89680d76a99\\exec-98f1c015-47db-4390-b29b-0057c9e25097.png",
+      "filename": "plans.webp",
+      "scene": "Close-up contractor hands reviewing architectural construction drawings on a tidy table with ruler and pencil, building renovation planning, natural light.",
+      "url": "/images/plans.webp"
+    }
+  ]
+}
