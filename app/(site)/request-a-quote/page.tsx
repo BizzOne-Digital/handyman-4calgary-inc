@@ -3,8 +3,9 @@ import { Clock, Mail, MapPin, Phone } from "lucide-react";
 import { QuoteForm } from "@/components/forms/QuoteForm";
 import { SimpleHero } from "@/components/sections/PageHero";
 import { Container } from "@/components/ui/layout";
-import { DIVISIONS, SERVICE_OPTIONS, type Division } from "@/lib/constants";
-import { getPage, getSettings } from "@/lib/content/queries";
+import { DIVISIONS, type Division } from "@/lib/constants";
+import { getPage, getServices, getSettings } from "@/lib/content/queries";
+import { buildServiceOptions, type ServiceOptions } from "@/lib/content/service-options";
 import { pageMetadata } from "@/lib/seo";
 
 export const generateMetadata = () => pageMetadata("request-a-quote");
@@ -12,18 +13,19 @@ export const generateMetadata = () => pageMetadata("request-a-quote");
 type Search = Promise<Record<string, string | string[] | undefined>>;
 
 /** Accepts only known division/service values from the query string. */
-function readPrefill(sp: Record<string, string | string[] | undefined>) {
+function readPrefill(sp: Record<string, string | string[] | undefined>, options: ServiceOptions) {
   const raw = (k: string) => (typeof sp[k] === "string" ? (sp[k] as string) : undefined);
   const d = raw("division");
   const division = d && (DIVISIONS as readonly string[]).includes(d) ? (d as Division) : undefined;
   const s = raw("service");
-  const service = division && s && SERVICE_OPTIONS[division].some((o) => o.value === s) ? s : undefined;
+  const service = division && s && options[division].some((o) => o.value === s) ? s : undefined;
   return { division, service };
 }
 
 export default async function RequestQuotePage({ searchParams }: { searchParams: Search }) {
-  const [page, settings, sp] = await Promise.all([getPage("request-a-quote"), getSettings(), searchParams]);
-  const { division, service } = readPrefill(sp);
+  const [page, settings, sp, services] = await Promise.all([getPage("request-a-quote"), getSettings(), searchParams, getServices()]);
+  const serviceOptions = buildServiceOptions(services);
+  const { division, service } = readPrefill(sp, serviceOptions);
 
   return (
     <>
@@ -34,7 +36,7 @@ export default async function RequestQuotePage({ searchParams }: { searchParams:
             <h2 className="text-2xl font-bold">Project details</h2>
             <p className="mt-1 text-sm text-muted">The more detail you share, the more useful our first conversation will be.</p>
             <div className="mt-6">
-              <QuoteForm key={`${division ?? ""}-${service ?? ""}`} variant="full" sourcePage="/request-a-quote" defaultDivision={division} defaultService={service} />
+              <QuoteForm key={`${division ?? ""}-${service ?? ""}`} variant="full" sourcePage="/request-a-quote" defaultDivision={division} defaultService={service} serviceOptions={serviceOptions} />
             </div>
           </div>
 

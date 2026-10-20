@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { DIVISIONS, ENQUIRY_STATUSES } from "@/lib/constants";
+import { DIVISIONS, ENQUIRY_STATUSES, SERVICE_GROUP_KEYS, getGroup } from "@/lib/constants";
 
 const text = (max: number) => z.string().trim().max(max, `Must be ${max} characters or fewer.`);
 const required = (max: number, label: string) => text(max).min(1, `${label} is required.`);
@@ -45,7 +45,8 @@ export const pageDataSchema = z.object({
 });
 export type PageDataInput = z.infer<typeof pageDataSchema>;
 
-export const serviceSchema = z.object({
+export const serviceSchema = z
+  .object({
   key: z
     .string()
     .trim()
@@ -53,16 +54,17 @@ export const serviceSchema = z.object({
     .max(80)
     .regex(/^[a-z0-9-]+$/, "Use lowercase letters, numbers and hyphens."),
   division: z.enum(DIVISIONS),
+  group: z.enum(SERVICE_GROUP_KEYS),
   title: required(120, "Title"),
   summary: text(300),
   description: text(2000),
   highlights: z.array(text(160)).max(10),
-  href: linkHref,
   image: imageUrl,
   imageAlt: text(200),
   order: z.coerce.number().int().min(0).max(999),
   status: z.enum(["draft", "published"]),
-});
+  })
+  .refine((v) => getGroup(v.group)?.division === v.division, { path: ["group"], message: "Choose a group in the same division." });
 export type ServiceInput = z.infer<typeof serviceSchema>;
 
 export const projectSchema = z
@@ -70,6 +72,12 @@ export const projectSchema = z
     title: required(120, "Title"),
     category: z.enum(DIVISIONS),
     description: text(600),
+    serviceKey: z
+      .string()
+      .trim()
+      .max(80)
+      .regex(/^[a-z0-9-]*$/)
+      .default(""),
     image: imageUrl.refine((v) => v !== "", "An image is required."),
     imageAlt: required(200, "Alt text"),
     illustrative: z.boolean(),

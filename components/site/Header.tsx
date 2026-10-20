@@ -12,20 +12,24 @@ type Props = { logoUrl: string; logoAlt: string; phone: string; phoneHref: strin
 export function Header({ logoUrl, logoAlt, phone, phoneHref, email }: Props) {
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
-  const [dropdown, setDropdown] = useState(false);
+  /** href of the open desktop dropdown, if any. */
+  const [dropdown, setDropdown] = useState<string | null>(null);
   const menuButton = useRef<HTMLButtonElement>(null);
   const panel = useRef<HTMLDivElement>(null);
-  const dropdownRef = useRef<HTMLLIElement>(null);
+  const headerRef = useRef<HTMLElement>(null);
+  /** Top of the mobile panel: the header's bottom edge (the utility bar may still be visible above it). */
+  const [menuTop, setMenuTop] = useState(72);
 
   // Close menus on navigation.
   useEffect(() => {
     setOpen(false);
-    setDropdown(false);
+    setDropdown(null);
   }, [pathname]);
 
   // Mobile menu: lock scroll, close on Escape, keep focus inside.
   useEffect(() => {
     if (!open) return;
+    setMenuTop(Math.round(headerRef.current?.getBoundingClientRect().bottom ?? 72));
     const prev = document.body.style.overflow;
     document.body.style.overflow = "hidden";
     const first = panel.current?.querySelector<HTMLElement>("a,button");
@@ -59,9 +63,9 @@ export function Header({ logoUrl, logoAlt, phone, phoneHref, email }: Props) {
   useEffect(() => {
     if (!dropdown) return;
     const onClick = (e: MouseEvent) => {
-      if (!dropdownRef.current?.contains(e.target as Node)) setDropdown(false);
+      if (!(e.target as Element).closest?.("[data-dropdown]")) setDropdown(null);
     };
-    const onKey = (e: KeyboardEvent) => e.key === "Escape" && setDropdown(false);
+    const onKey = (e: KeyboardEvent) => e.key === "Escape" && setDropdown(null);
     document.addEventListener("mousedown", onClick);
     document.addEventListener("keydown", onKey);
     return () => {
@@ -71,7 +75,8 @@ export function Header({ logoUrl, logoAlt, phone, phoneHref, email }: Props) {
   }, [dropdown]);
 
   return (
-    <header className="sticky top-0 z-40 border-b border-line bg-white/95 backdrop-blur-sm">
+    <header ref={headerRef} className="sticky top-0 z-40 border-b border-line bg-white">
+      {/* No backdrop-filter on the header: it would become the containing block for the fixed mobile menu. */}
       <div className="mx-auto flex h-[72px] max-w-[1320px] items-center justify-between gap-6 px-4 sm:px-6 lg:h-[96px] lg:px-10">
         <Logo src={logoUrl} alt={logoAlt} priority className="h-14 lg:h-[84px]" />
 
@@ -95,13 +100,15 @@ export function Header({ logoUrl, logoAlt, phone, phoneHref, email }: Props) {
                   </li>
                 );
               }
+              const isOpen = dropdown === item.href;
+              const menuId = `menu-${item.href.replace(/W/g, "")}`;
               return (
                 <li
                   key={item.href}
-                  ref={dropdownRef}
+                  data-dropdown
                   className="relative"
-                  onMouseEnter={() => setDropdown(true)}
-                  onMouseLeave={() => setDropdown(false)}
+                  onMouseEnter={() => setDropdown(item.href)}
+                  onMouseLeave={() => setDropdown(null)}
                 >
                   <div className="flex items-center">
                     <Link href={item.href} aria-current={pathname === item.href ? "page" : undefined} className={`${linkCls} pr-1`}>
@@ -110,19 +117,21 @@ export function Header({ logoUrl, logoAlt, phone, phoneHref, email }: Props) {
                     </Link>
                     <button
                       type="button"
-                      aria-expanded={dropdown}
-                      aria-controls="residential-menu"
-                      aria-label="Show residential services"
-                      onClick={() => setDropdown((d) => !d)}
+                      aria-expanded={isOpen}
+                      aria-controls={menuId}
+                      aria-label={`Show ${item.label} services`}
+                      // Mouse clicks (detail > 0) keep the hover-opened menu open; keyboard activation toggles it.
+                      onClick={(e) => setDropdown((d) => (e.detail > 0 ? item.href : d === item.href ? null : item.href))}
                       className="inline-flex h-11 w-7 items-center justify-center text-muted hover:text-ink"
                     >
-                      <ChevronDown aria-hidden="true" className={`h-4 w-4 transition-transform ${dropdown ? "rotate-180" : ""}`} />
+                      <ChevronDown aria-hidden="true" className={`h-4 w-4 transition-transform ${isOpen ? "rotate-180" : ""}`} />
                     </button>
                   </div>
                   <div
-                    id="residential-menu"
-                    hidden={!dropdown}
-                    className="absolute left-0 top-full w-[300px] pt-2"
+                    id={menuId}
+                    hidden={!isOpen}
+                    onClick={(e) => (e.target as Element).closest("a") && setDropdown(null)}
+                    className="absolute left-0 top-full z-10 w-[320px] pt-2"
                   >
                     <ul className="rounded-[4px] border border-line bg-white p-2 shadow-[0_12px_32px_-12px_rgba(0,0,0,0.18)]">
                       {item.children.map((c) => (
@@ -175,9 +184,11 @@ export function Header({ logoUrl, logoAlt, phone, phoneHref, email }: Props) {
           role="dialog"
           aria-modal="true"
           aria-label="Site menu"
-          className="fixed inset-x-0 bottom-0 top-[72px] z-50 overflow-y-auto border-t border-line bg-white lg:hidden"
+          style={{ top: menuTop }}
+          className="fixed inset-x-0 bottom-0 z-50 overflow-y-auto border-t border-line bg-white lg:hidden"
         >
-          <nav aria-label="Mobile" className="px-4 pb-10 pt-4 sm:px-6">
+          {/* Close on any link tap, including same-page anchor links that do not change the pathname. */}
+          <nav aria-label="Mobile" className="px-4 pb-10 pt-4 sm:px-6" onClick={(e) => (e.target as Element).closest("a") && setOpen(false)}>
             <ul className="divide-y divide-line">
               {MAIN_NAV.map((item) => (
                 <li key={item.href} className="py-1">

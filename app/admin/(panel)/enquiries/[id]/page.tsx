@@ -20,7 +20,7 @@ export default async function EnquiryDetail({ params }: { params: Promise<{ id: 
     ["Received", new Date(e.createdAt).toLocaleString("en-CA", { dateStyle: "full", timeStyle: "short" })],
     ["Type", e.kind === "quote" ? "Quote request" : "Contact message"],
     ["Division", e.division ? DIVISION_LABELS[e.division] : "—"],
-    ["Service", serviceLabel(e.service) || "—"],
+    ["Service", e.serviceTitle || serviceLabel(e.service) || "—"],
     ["Project address", e.address || "—"],
     ["Preferred contact", e.preferredContact ? CONTACT_METHOD_LABELS[e.preferredContact] : "—"],
     ["Preferred consultation date", e.preferredDate ? `${e.preferredDate} (preference only, not confirmed)` : "—"],

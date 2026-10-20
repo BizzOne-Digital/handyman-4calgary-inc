@@ -6,6 +6,8 @@ export type ProjectDoc = {
   title: string;
   category: Division;
   description: string;
+  /** Optional link to a service key, so the photo can appear on that service section. */
+  serviceKey?: string;
   image: string;
   imageAlt: string;
   /** True for stock/illustrative imagery. Only set false for genuine completed client work. */
@@ -21,6 +23,7 @@ const ProjectSchema = new Schema<ProjectDoc>(
     title: { type: String, required: true, trim: true, maxlength: 120 },
     category: { type: String, enum: DIVISIONS, required: true, index: true },
     description: { type: String, default: "", trim: true, maxlength: 600 },
+    serviceKey: { type: String, trim: true, maxlength: 80, index: true },
     image: { type: String, required: true, trim: true, maxlength: 500 },
     imageAlt: { type: String, required: true, trim: true, maxlength: 200 },
     illustrative: { type: Boolean, default: true },

@@ -10,7 +10,8 @@
     "seed": "tsx --conditions=react-server scripts/seed.ts",
     "admin:create": "tsx --conditions=react-server scripts/create-admin.ts",
     "cleanup:uploads": "tsx --conditions=react-server scripts/cleanup-uploads.ts",
-    "migrate:images": "tsx --conditions=react-server scripts/migrate-images.ts"
+    "migrate:images": "tsx --conditions=react-server scripts/migrate-images.ts",
+    "migrate:structure": "tsx --conditions=react-server scripts/migrate-structure.ts"
   },
   "dependencies": {
     "bcryptjs": "^3.0.3",

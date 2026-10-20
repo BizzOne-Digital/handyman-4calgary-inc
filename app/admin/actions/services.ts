@@ -11,7 +11,8 @@ import { Service } from "@/models/Service";
 
 function refresh() {
   revalidateTag(TAGS.services);
-  for (const p of ["/", "/residential", "/commercial-industrial", "/admin/services"]) revalidatePath(p);
+  // Services feed the homepage, every service page and every quote form.
+  revalidatePath("/", "layout");
 }
 
 export async function saveService(id: string | null, input: unknown): Promise<ActionResult<{ id: string }>> {

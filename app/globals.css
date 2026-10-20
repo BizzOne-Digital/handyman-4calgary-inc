@@ -51,7 +51,8 @@
   .on-dark:focus-visible {
     outline-color: #fff;
   }
-  [id] { scroll-margin-top: 96px; }
+  [id] { scroll-margin-top: 136px; }
+  @media (min-width: 1024px) { [id] { scroll-margin-top: 160px; } }
 }
 
 @layer components {

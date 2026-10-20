@@ -1,12 +1,11 @@
-import Link from "next/link";
-import { ArrowRight, Building, Home, KeyRound } from "lucide-react";
+import { Building, Home, KeyRound } from "lucide-react";
+import { GroupCards } from "@/components/sections/services/GroupCards";
 import { CtaBand } from "@/components/sections/CtaBand";
 import { Faq } from "@/components/sections/Faq";
 import { ImageHero } from "@/components/sections/PageHero";
 import { DEFAULT_STEPS, Process } from "@/components/sections/Process";
 import { Container, SectionHeading } from "@/components/ui/layout";
 import { Reveal } from "@/components/ui/Reveal";
-import { SafeImage } from "@/components/ui/SafeImage";
 import { getPage, getServices, getSettings } from "@/lib/content/queries";
 import { pageMetadata } from "@/lib/seo";
 
@@ -49,37 +48,12 @@ export default async function ResidentialPage() {
           <SectionHeading
             id="res-services"
             eyebrow="Residential services"
-            title="Three ways we improve your home."
-            description="Choose a service to see the typical scope, how projects run and answers to common questions."
+            title="Every residential service, in three groups."
+            description="Choose a group to see the scope of each service, how projects run and answers to common questions."
           />
-          <ul className="mt-10 grid gap-6 md:grid-cols-3">
-            {services.map((s, i) => (
-              <Reveal as="li" key={s.id} delay={i * 90}>
-                <Link href={s.href || "/residential"} className="group flex h-full flex-col overflow-hidden rounded-[4px] border border-line bg-white transition-shadow hover:shadow-[0_18px_40px_-24px_rgba(0,0,0,0.35)]">
-                  <span className="relative block aspect-[16/10] overflow-hidden bg-mist">
-                    <SafeImage src={s.image} alt={s.imageAlt} fill sizes="(min-width: 768px) 33vw, 100vw" className="object-cover transition-transform duration-700 group-hover:scale-[1.05]" />
-                  </span>
-                  <span className="flex flex-1 flex-col p-6">
-                    <h3 className="text-xl font-bold">{s.title}</h3>
-                    <span className="mt-2 text-[15px] leading-relaxed text-muted">{s.description || s.summary}</span>
-                    {s.highlights.length > 0 && (
-                      <ul className="mt-4 space-y-1.5 text-sm text-graphite">
-                        {s.highlights.map((h) => (
-                          <li key={h} className="flex gap-2">
-                            <span aria-hidden="true" className="mt-2 h-1 w-1 shrink-0 bg-ink" />
-                            {h}
-                          </li>
-                        ))}
-                      </ul>
-                    )}
-                    <span className="mt-auto inline-flex items-center gap-2 pt-6 text-sm font-semibold">
-                      View service <ArrowRight aria-hidden="true" className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
-                    </span>
-                  </span>
-                </Link>
-              </Reveal>
-            ))}
-          </ul>
+          <div className="mt-10">
+            <GroupCards division="residential" services={services} />
+          </div>
         </Container>
       </section>
 

@@ -6,7 +6,16 @@ import { connectDb, isDbConfigured } from "@/lib/db/connect";
 import { clientKey, rateLimit } from "@/lib/rate-limit";
 import { notifyNewEnquiry } from "@/lib/notify";
 import { contactSchema, flattenErrors, quoteSchema, type FieldErrors } from "@/lib/validation/enquiry";
+import { OTHER_SERVICE, type Division } from "@/lib/constants";
+import { getServices } from "@/lib/content/queries";
 import { Enquiry } from "@/models/Enquiry";
+
+/** Confirms the service belongs to the division and returns its title for the enquiry record. */
+async function resolveService(division: Division, key: string): Promise<string | null> {
+  if (key === OTHER_SERVICE[division].value) return OTHER_SERVICE[division].label;
+  const hit = (await getServices(division)).find((s) => s.key === key);
+  return hit ? hit.title : null;
+}
 
 export type EnquiryResult =
   | { ok: true; reference: string }
@@ -60,6 +69,10 @@ export async function submitQuote(input: unknown): Promise<EnquiryResult> {
   try {
     const blocked = await guard(startedAt, website);
     if (blocked) return blocked;
+    const serviceTitle = await resolveService(v.division, v.service);
+    if (!serviceTitle) {
+      return { ok: false, message: "Please choose a service from the list.", fieldErrors: { service: "Choose a service for this project type." } };
+    }
     const doc = {
       kind: "quote" as const,
       name: v.name,
@@ -67,6 +80,7 @@ export async function submitQuote(input: unknown): Promise<EnquiryResult> {
       phone: v.phone,
       division: v.division,
       service: v.service,
+      serviceTitle,
       address: v.address || undefined,
       message: v.message,
       preferredContact: v.preferredContact,

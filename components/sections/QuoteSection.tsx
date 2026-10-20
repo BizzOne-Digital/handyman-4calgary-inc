@@ -2,9 +2,11 @@ import { Mail, Phone } from "lucide-react";
 import { QuoteForm } from "@/components/forms/QuoteForm";
 import { Container } from "@/components/ui/layout";
 import type { Division } from "@/lib/constants";
+import { getServices } from "@/lib/content/queries";
+import { buildServiceOptions } from "@/lib/content/service-options";
 
 /** Charcoal "Let's talk" section with the compact quote form, as in the mockup. */
-export function QuoteSection({
+export async function QuoteSection({
   phone,
   phoneHref,
   email,
@@ -24,6 +26,7 @@ export function QuoteSection({
   copy?: string;
 }) {
   const [l1, l2] = heading.split("\n");
+  const serviceOptions = buildServiceOptions(await getServices());
   return (
     <section id="quote" className="bg-charcoal py-14 sm:py-20" aria-labelledby="quote-heading">
       <Container className="grid items-center gap-10 lg:grid-cols-[1fr_1.15fr] lg:gap-16">
@@ -58,6 +61,7 @@ export function QuoteSection({
             sourcePage={sourcePage}
             defaultDivision={defaultDivision}
             defaultService={defaultService}
+            serviceOptions={serviceOptions}
           />
         </div>
       </Container>

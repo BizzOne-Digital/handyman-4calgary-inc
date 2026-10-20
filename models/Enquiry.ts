@@ -10,6 +10,8 @@ export type EnquiryDoc = {
   phone: string;
   division?: Division;
   service?: string;
+  /** Service title at the time of submission (services can be renamed later). */
+  serviceTitle?: string;
   address?: string;
   message: string;
   preferredContact?: (typeof CONTACT_METHODS)[number];
@@ -32,6 +34,7 @@ const EnquirySchema = new Schema<EnquiryDoc>(
     phone: { type: String, default: "", trim: true, maxlength: 30 },
     division: { type: String, enum: DIVISIONS },
     service: { type: String, trim: true, maxlength: 80 },
+    serviceTitle: { type: String, trim: true, maxlength: 140 },
     address: { type: String, trim: true, maxlength: 200 },
     message: { type: String, required: true, trim: true, maxlength: 3000 },
     preferredContact: { type: String, enum: CONTACT_METHODS },

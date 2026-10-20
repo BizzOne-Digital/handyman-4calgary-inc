@@ -6,7 +6,7 @@ import { useState, useTransition } from "react";
 import { ArrowLeft, Trash2 } from "lucide-react";
 import { toast } from "sonner";
 import { deleteService, saveService } from "@/app/admin/actions/services";
-import { DIVISIONS, DIVISION_LABELS } from "@/lib/constants";
+import { DIVISIONS, DIVISION_LABELS, groupsFor, serviceHref } from "@/lib/constants";
 import type { ServiceInput } from "@/lib/validation/admin";
 import { AdminImageField } from "./AdminImageField";
 import { ConfirmButton } from "./ConfirmButton";
@@ -65,12 +65,17 @@ export function ServiceForm({ id, initial }: { id: string | null; initial: Servi
           <Panel title="Settings">
             <SelectInput label="Status" value={v.status} onChange={(x) => set("status", x)}
               options={[{ value: "published", label: "Published" }, { value: "draft", label: "Draft (hidden)" }]} />
-            <SelectInput label="Division" value={v.division} onChange={(x) => set("division", x)}
+            <SelectInput label="Division" value={v.division}
+              onChange={(x) => setV((p) => ({ ...p, division: x, group: groupsFor(x)[0].key }))}
               options={DIVISIONS.map((d) => ({ value: d, label: DIVISION_LABELS[d] }))} />
+            <SelectInput label="Group" value={v.group} onChange={(x) => set("group", x)} error={errors.group}
+              hint="Which page or section this service appears under."
+              options={groupsFor(v.division).map((g) => ({ value: g.key, label: g.title }))} />
             <TextInput label="Key" required value={v.key} onChange={(x) => set("key", x.toLowerCase())} maxLength={80} error={errors.key}
-              hint="Unique id, e.g. commercial-renovations. The Commercial page uses its three built-in keys." />
-            <TextInput label="Link" value={v.href} onChange={(x) => set("href", x)} maxLength={200} error={errors.href}
-              hint="Where the card links, e.g. /residential/basement-development" />
+              hint="Unique id used in links, e.g. commercial-flooring. Changing it changes the public link." />
+            <p className="text-xs text-muted">
+              Public link: <span className="break-all font-medium text-ink">{v.key ? serviceHref(v.group, v.key) : "set a key"}</span>
+            </p>
             <TextInput label="Display order" type="number" value={String(v.order)} onChange={(x) => set("order", Number(x) || 0)} error={errors.order} />
           </Panel>
           {id && (

@@ -82,7 +82,7 @@ export default async function EnquiriesPage({ searchParams }: { searchParams: Pr
                   <td className="px-4 py-3">{e.kind === "quote" ? "Quote" : "Contact"}</td>
                   <td className="px-4 py-3 text-muted">
                     {e.division ? DIVISION_LABELS[e.division] : "—"}
-                    {e.service && <span className="block text-xs">{serviceLabel(e.service)}</span>}
+                    {e.service && <span className="block text-xs">{e.serviceTitle || serviceLabel(e.service)}</span>}
                   </td>
                   <td className="px-4 py-3"><StatusBadge status={e.status} /></td>
                 </tr>

@@ -25,7 +25,7 @@ export default async function Dashboard() {
       PageContent.countDocuments({ published: { $ne: null } }),
       PageContent.countDocuments({ hasUnpublishedChanges: true }),
       StoredUpload.aggregate<{ n: number; bytes: number }>([{ $group: { _id: null, n: { $sum: 1 }, bytes: { $sum: "$size" } } }]),
-      Enquiry.find({}).select("reference name kind division service status createdAt").sort({ createdAt: -1 }).limit(6).lean(),
+      Enquiry.find({}).select("reference name kind division service serviceTitle status createdAt").sort({ createdAt: -1 }).limit(6).lean(),
     ]);
   const byStatus = Object.fromEntries(statusCounts.map((s) => [s._id, s.n]));
   const uploads = uploadStats[0] ?? { n: 0, bytes: 0 };
@@ -73,7 +73,7 @@ export default async function Dashboard() {
                       <span className="block text-xs text-muted">
                         {e.reference} · {e.kind === "quote" ? "Quote" : "Contact"}
                         {e.division ? ` · ${DIVISION_LABELS[e.division]}` : ""}
-                        {e.service ? ` · ${serviceLabel(e.service)}` : ""}
+                        {e.service ? ` · ${e.serviceTitle || serviceLabel(e.service)}` : ""}
                       </span>
                     </span>
                     <span className="flex items-center gap-3">

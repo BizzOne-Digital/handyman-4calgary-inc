@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { Facebook, Instagram, Linkedin, Mail, MapPin, Phone, Youtube, Globe } from "lucide-react";
+import { SERVICE_GROUPS } from "@/lib/constants";
 import type { SiteSettingsData } from "@/models/SiteSettings";
 import { Logo } from "./Logo";
 
@@ -12,17 +13,10 @@ const FOOTER_NAV = [
   { label: "Contact", href: "/contact" },
 ];
 
-const RESIDENTIAL = [
-  { label: "Basement Development", href: "/residential/basement-development" },
-  { label: "Kitchen & Bathroom Renovations", href: "/residential/kitchen-bathroom-renovations" },
-  { label: "Home Improvements & Maintenance", href: "/residential/home-improvements-maintenance" },
-];
-
-const COMMERCIAL = [
-  { label: "Commercial Renovations", href: "/commercial-industrial#commercial-renovations" },
-  { label: "Office & Retail Improvements", href: "/commercial-industrial#office-retail" },
-  { label: "Facility & Industrial Maintenance", href: "/commercial-industrial#facility-maintenance" },
-];
+const groupLinks = (division: "residential" | "commercial") =>
+  SERVICE_GROUPS.filter((g) => g.division === division).map((g) => ({ label: g.title, href: g.path }));
+const RESIDENTIAL = groupLinks("residential");
+const COMMERCIAL = groupLinks("commercial");
 
 const SOCIAL_ICONS = { facebook: Facebook, instagram: Instagram, linkedin: Linkedin, youtube: Youtube, google: Globe };
 const SOCIAL_LABELS = { facebook: "Facebook", instagram: "Instagram", linkedin: "LinkedIn", youtube: "YouTube", google: "Google Business Profile" };

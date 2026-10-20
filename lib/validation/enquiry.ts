@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { CONTACT_METHODS, DIVISIONS, SERVICE_OPTIONS } from "@/lib/constants";
+import { CONTACT_METHODS, DIVISIONS } from "@/lib/constants";
 
 const trimmed = (min: number, max: number, label: string) =>
   z
@@ -26,7 +26,12 @@ export const quoteSchema = z
     email: z.string().trim().max(200).email("Enter a valid email address."),
     phone,
     division: z.enum(DIVISIONS, { errorMap: () => ({ message: "Choose a project type." }) }),
-    service: z.string().trim().min(1, "Choose the service you need.").max(80),
+    service: z
+      .string()
+      .trim()
+      .min(1, "Choose the service you need.")
+      .max(80)
+      .regex(/^[a-z0-9-]+$/, "Choose the service you need."),
     address: z.string().trim().max(200, "Address must be 200 characters or fewer.").optional().default(""),
     message: trimmed(10, 3000, "Project description"),
     preferredContact: z.enum(CONTACT_METHODS).optional().default("either"),
@@ -40,9 +45,6 @@ export const quoteSchema = z
     ...spamFields,
   })
   .superRefine((v, ctx) => {
-    if (!SERVICE_OPTIONS[v.division].some((s) => s.value === v.service)) {
-      ctx.addIssue({ code: z.ZodIssueCode.custom, path: ["service"], message: "Choose a service for this project type." });
-    }
     if (v.preferredDate) {
       const d = new Date(`${v.preferredDate}T12:00:00`);
       const today = new Date();

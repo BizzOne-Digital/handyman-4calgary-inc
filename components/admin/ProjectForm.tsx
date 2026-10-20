@@ -12,7 +12,9 @@ import { AdminImageField } from "./AdminImageField";
 import { ConfirmButton } from "./ConfirmButton";
 import { Checkbox, Panel, SelectInput, SubmitButton, TextArea, TextInput } from "./inputs";
 
-export function ProjectForm({ id, initial }: { id: string | null; initial: ProjectInput }) {
+export type ServiceChoice = { key: string; title: string; division: string };
+
+export function ProjectForm({ id, initial, services }: { id: string | null; initial: ProjectInput; services: ServiceChoice[] }) {
   const router = useRouter();
   const [v, setV] = useState(initial);
   const [errors, setErrors] = useState<Record<string, string>>({});
@@ -57,8 +59,11 @@ export function ProjectForm({ id, initial }: { id: string | null; initial: Proje
           <Panel title="Settings">
             <SelectInput label="Status" value={v.status} onChange={(x) => set("status", x)}
               options={[{ value: "published", label: "Published" }, { value: "draft", label: "Draft (hidden)" }]} />
-            <SelectInput label="Category" value={v.category} onChange={(x) => set("category", x)}
+            <SelectInput label="Category" value={v.category} onChange={(x) => setV((p) => ({ ...p, category: x, serviceKey: "" }))}
               options={DIVISIONS.map((d) => ({ value: d, label: DIVISION_LABELS[d] }))} />
+            <SelectInput label="Related service" value={v.serviceKey} onChange={(x) => set("serviceKey", x)}
+              hint="The photo also appears in that service's section on the website."
+              options={[{ value: "", label: "None" }, ...services.filter((s) => s.division === v.category).map((s) => ({ value: s.key, label: s.title }))]} />
             <TextInput label="Display order" type="number" value={String(v.order)} onChange={(x) => set("order", Number(x) || 0)} error={errors.order} />
             <Checkbox
               label="Illustrative example"

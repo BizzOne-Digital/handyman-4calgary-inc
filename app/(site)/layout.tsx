@@ -1,5 +1,6 @@
 import { Footer } from "@/components/site/Footer";
 import { Header } from "@/components/site/Header";
+import { MobileActionBar } from "@/components/site/MobileActionBar";
 import { UtilityBar } from "@/components/site/UtilityBar";
 import { JsonLd } from "@/components/ui/JsonLd";
 import { SITE_URL } from "@/lib/constants";
@@ -30,7 +31,10 @@ export default async function SiteLayout({ children }: { children: React.ReactNo
         email={settings.email}
       />
       <main id="main">{children}</main>
-      <Footer settings={settings} />
+      <div className="pb-[72px] lg:pb-0">
+        <Footer settings={settings} />
+      </div>
+      <MobileActionBar phone={settings.phone} phoneHref={settings.phoneHref} />
       <JsonLd
         data={{
           "@context": "https://schema.org",

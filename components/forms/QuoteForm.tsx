@@ -5,7 +5,8 @@ import Link from "next/link";
 import { ArrowRight, CheckCircle2, Loader2 } from "lucide-react";
 import { toast } from "sonner";
 import { submitQuote } from "@/app/actions/enquiries";
-import { CONTACT_METHOD_LABELS, CONTACT_METHODS, DIVISION_LABELS, SERVICE_OPTIONS, type Division } from "@/lib/constants";
+import { CONTACT_METHOD_LABELS, CONTACT_METHODS, DIVISION_LABELS, type Division } from "@/lib/constants";
+import type { ServiceOptions } from "@/lib/content/service-options";
 import { flattenErrors, quoteSchema, type FieldErrors } from "@/lib/validation/enquiry";
 import { Field, Honeypot, RadioGroup, focusFirstError } from "./fields";
 
@@ -15,6 +16,8 @@ type Props = {
   defaultService?: string;
   sourcePage: string;
   title?: string;
+  /** Published services per division, built with buildServiceOptions(). */
+  serviceOptions: ServiceOptions;
 };
 
 type Values = {
@@ -29,7 +32,7 @@ type Values = {
   preferredDate: string;
 };
 
-export function QuoteForm({ variant = "full", defaultDivision, defaultService, sourcePage, title }: Props) {
+export function QuoteForm({ variant = "full", defaultDivision, defaultService, sourcePage, title, serviceOptions }: Props) {
   const full = variant === "full";
   const [values, setValues] = useState<Values>({
     name: "",
@@ -55,13 +58,13 @@ export function QuoteForm({ variant = "full", defaultDivision, defaultService, s
     startedAt.current = Date.now();
   }, []);
 
-  const services = useMemo(() => (values.division ? SERVICE_OPTIONS[values.division] : []), [values.division]);
+  const services = useMemo(() => (values.division ? serviceOptions[values.division] : []), [values.division, serviceOptions]);
   const today = useMemo(() => new Date(Date.now() - new Date().getTimezoneOffset() * 60000).toISOString().slice(0, 10), []);
 
   const set = <K extends keyof Values>(k: K, v: Values[K]) => {
     setValues((prev) => {
       const next = { ...prev, [k]: v };
-      if (k === "division" && !SERVICE_OPTIONS[v as Division].some((s) => s.value === prev.service)) next.service = "";
+      if (k === "division" && !serviceOptions[v as Division].some((s) => s.value === prev.service)) next.service = "";
       return next;
     });
     if (errors[k]) setErrors(({ [k]: _drop, ...rest }) => rest);
@@ -201,11 +204,23 @@ export function QuoteForm({ variant = "full", defaultDivision, defaultService, s
               <option value="">
                 {values.division ? `Choose a ${DIVISION_LABELS[values.division].split(" ")[0].toLowerCase()} service` : "Choose a service"}
               </option>
-              {services.map((s) => (
-                <option key={s.value} value={s.value}>
-                  {s.label}
-                </option>
-              ))}
+              {[...new Set(services.map((s) => s.group))].map((group) =>
+                group ? (
+                  <optgroup key={group} label={group}>
+                    {services.filter((s) => s.group === group).map((s) => (
+                      <option key={s.value} value={s.value}>
+                        {s.label}
+                      </option>
+                    ))}
+                  </optgroup>
+                ) : (
+                  services.filter((s) => !s.group).map((s) => (
+                    <option key={s.value} value={s.value}>
+                      {s.label}
+                    </option>
+                  ))
+                ),
+              )}
             </select>
           )}
         </Field>

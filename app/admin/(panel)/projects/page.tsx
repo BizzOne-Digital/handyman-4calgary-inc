@@ -6,22 +6,32 @@ import { SafeImage } from "@/components/ui/SafeImage";
 import { DIVISION_LABELS } from "@/lib/constants";
 import { connectDb } from "@/lib/db/connect";
 import { Project } from "@/models/Project";
+import { Service } from "@/models/Service";
+import { BulkProjectUpload } from "@/components/admin/BulkProjectUpload";
 
 export default async function ProjectsList() {
   await connectDb();
-  const projects = await Project.find({}).sort({ order: 1, createdAt: -1 }).lean();
+  const [projects, svc] = await Promise.all([
+    Project.find({}).sort({ order: 1, createdAt: -1 }).lean(),
+    Service.find({}, { key: 1, title: 1, division: 1 }).sort({ title: 1 }).lean(),
+  ]);
+  const services = svc.map((s) => ({ key: s.key, title: s.title, division: s.division }));
+  const serviceTitle = new Map(services.map((s) => [s.key, s.title]));
 
   return (
     <>
       <AdminHeader
         title="Projects"
-        description="Gallery items on the Projects page. Mark stock photography as illustrative."
+        description="Gallery photos. Link a photo to a service and it also appears on that service section of the website."
         actions={
           <Link href="/admin/projects/new" className="inline-flex min-h-11 items-center gap-2 rounded-[3px] bg-ink px-4 text-sm font-semibold text-white hover:bg-graphite">
             <Plus aria-hidden="true" className="h-4 w-4" /> New project
           </Link>
         }
       />
+      <div className="mb-6">
+        <BulkProjectUpload services={services} />
+      </div>
       {projects.length === 0 ? (
         <div className="rounded-[4px] border border-dashed border-line bg-white p-10 text-center">
           <p className="font-semibold">No projects yet.</p>
@@ -41,7 +51,10 @@ export default async function ProjectsList() {
                   <span className="ml-auto text-xs text-subtle">Order {p.order}</span>
                 </div>
                 <p className="mt-2 font-semibold">{p.title}</p>
-                <p className="text-xs text-muted">{DIVISION_LABELS[p.category]}</p>
+                <p className="text-xs text-muted">
+                  {DIVISION_LABELS[p.category]}
+                  {p.serviceKey && serviceTitle.get(p.serviceKey) ? ` · ${serviceTitle.get(p.serviceKey)}` : ""}
+                </p>
                 <Link href={`/admin/projects/${p._id}`} className="mt-3 inline-flex min-h-10 items-center gap-2 rounded-[3px] border border-line px-3 text-sm font-medium hover:border-ink">
                   <Pencil aria-hidden="true" className="h-4 w-4" /> Edit
                 </Link>

@@ -8,7 +8,7 @@ const esc = (s: string) => s.replace(/[&<>"']/g, (c) => `&#${c.charCodeAt(0)};`)
  * Optional email notification via Resend (https://resend.com), enabled when RESEND_API_KEY is set.
  * Enquiries are already saved before this runs; a failure here never affects the visitor.
  */
-export async function notifyNewEnquiry(e: Pick<EnquiryDoc, "reference" | "kind" | "name" | "email" | "phone" | "division" | "service" | "address" | "message" | "preferredContact" | "preferredDate">) {
+export async function notifyNewEnquiry(e: Pick<EnquiryDoc, "reference" | "kind" | "name" | "email" | "phone" | "division" | "service" | "serviceTitle" | "address" | "message" | "preferredContact" | "preferredDate">) {
   const key = process.env.RESEND_API_KEY;
   const to = process.env.NOTIFY_EMAIL_TO;
   const from = process.env.NOTIFY_EMAIL_FROM;
@@ -21,7 +21,7 @@ export async function notifyNewEnquiry(e: Pick<EnquiryDoc, "reference" | "kind" 
     ["Email", e.email],
     ["Phone", e.phone],
     ["Division", e.division ? DIVISION_LABELS[e.division] : ""],
-    ["Service", serviceLabel(e.service)],
+    ["Service", e.serviceTitle || serviceLabel(e.service)],
     ["Project address", e.address],
     ["Preferred contact", e.preferredContact],
     ["Preferred consultation date (not confirmed)", e.preferredDate],

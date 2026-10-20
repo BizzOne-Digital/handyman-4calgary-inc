@@ -1,7 +1,7 @@
 import "server-only";
 import { unstable_cache } from "next/cache";
 import { connectDb, isDbConfigured } from "@/lib/db/connect";
-import type { Division, PageSlug } from "@/lib/constants";
+import { serviceHref, type Division, type PageSlug, type ServiceGroupKey } from "@/lib/constants";
 import { PageContent, type PageData } from "@/models/PageContent";
 import { Service } from "@/models/Service";
 import { Project } from "@/models/Project";
@@ -21,10 +21,12 @@ export type PublicService = {
   id: string;
   key: string;
   division: Division;
+  group: ServiceGroupKey;
   title: string;
   summary: string;
   description: string;
   highlights: string[];
+  /** Computed link to the service section on its group page. */
   href: string;
   image: string;
   imageAlt: string;
@@ -35,6 +37,7 @@ export type PublicProject = {
   title: string;
   category: Division;
   description: string;
+  serviceKey: string;
   image: string;
   imageAlt: string;
   illustrative: boolean;
@@ -103,27 +106,28 @@ export function pageMedia(page: PageData, slug: PageSlug, key: string) {
 }
 
 const defaultServices = (): PublicService[] =>
-  DEFAULT_SERVICES.map((s) => ({ ...s, id: s.key }));
+  DEFAULT_SERVICES.map((s) => ({ ...s, id: s.key, href: serviceHref(s.group, s.key) }));
 
 const readServices = unstable_cache(
   async (): Promise<PublicService[]> => {
     await connectDb();
     if ((await Service.estimatedDocumentCount()) === 0) return defaultServices();
-    const docs = await Service.find({ status: "published" }).sort({ division: 1, order: 1, title: 1 }).lean();
+    const docs = await Service.find({ status: "published" }).sort({ division: 1, group: 1, order: 1, title: 1 }).lean();
     return docs.map((d) => ({
       id: String(d._id),
       key: d.key,
       division: d.division,
+      group: d.group,
       title: d.title,
       summary: d.summary,
       description: d.description,
       highlights: d.highlights ?? [],
-      href: d.href,
+      href: serviceHref(d.group, d.key),
       image: d.image,
       imageAlt: d.imageAlt,
     }));
   },
-  ["services"],
+  ["services-v2"],
   { tags: [TAGS.services], revalidate: REVALIDATE_SECONDS },
 );
 
@@ -133,7 +137,7 @@ export async function getServices(division?: Division) {
 }
 
 const defaultProjects = (): PublicProject[] =>
-  DEFAULT_PROJECTS.map((p, i) => ({ ...p, id: `default-${i}`, illustrative: true }));
+  DEFAULT_PROJECTS.map((p, i) => ({ ...p, id: `default-${i}`, serviceKey: p.serviceKey ?? "", illustrative: true }));
 
 const readProjects = unstable_cache(
   async (): Promise<PublicProject[]> => {
@@ -145,15 +149,21 @@ const readProjects = unstable_cache(
       title: d.title,
       category: d.category,
       description: d.description,
+      serviceKey: d.serviceKey ?? "",
       image: d.image,
       imageAlt: d.imageAlt,
       illustrative: d.illustrative,
     }));
   },
-  ["projects"],
+  ["projects-v2"],
   { tags: [TAGS.projects], revalidate: REVALIDATE_SECONDS },
 );
 
 export function getProjects() {
   return withFallback(readProjects, defaultProjects());
+}
+
+/** Published services in one group, in display order. */
+export async function getServicesByGroup(group: ServiceGroupKey) {
+  return (await getServices()).filter((s) => s.group === group);
 }

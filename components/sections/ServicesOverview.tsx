@@ -2,8 +2,9 @@ import { Container, SectionHeading } from "@/components/ui/layout";
 import { TextLink } from "@/components/ui/ButtonLink";
 import { Reveal } from "@/components/ui/Reveal";
 import type { PublicService } from "@/lib/content/queries";
-import { ServiceThumb } from "./ServiceCard";
+import { GroupCards } from "./services/GroupCards";
 
+/** Homepage overview: both divisions side by side, each with its service groups and every service. */
 export function ServicesOverview({ residential, commercial }: { residential: PublicService[]; commercial: PublicService[] }) {
   return (
     <section className="bg-white py-14 sm:py-20" aria-labelledby="services-heading">
@@ -13,25 +14,29 @@ export function ServicesOverview({ residential, commercial }: { residential: Pub
             align="center"
             eyebrow="Expertise for every space"
             title="The right team for your next project."
+            description="Choose your division to see every service we offer, grouped the way projects usually come together."
             id="services-heading"
           />
         </Reveal>
 
         <div className="mt-10 grid gap-12 lg:mt-14 lg:grid-cols-2 lg:gap-0">
-          <Group
+          <Division
             title="Residential / Home Services"
+            audience="For homeowners, landlords and residential property owners."
+            division="residential"
             services={residential}
-            linkLabel="View residential services"
+            linkLabel="View all residential services"
             linkHref="/residential"
             className="lg:border-r lg:border-line lg:pr-10"
           />
-          <Group
+          <Division
             title="Commercial & Industrial"
+            audience="For businesses, property managers, contractors and industrial clients."
+            division="commercial"
             services={commercial}
-            linkLabel="View commercial services"
+            linkLabel="View all commercial services"
             linkHref="/commercial-industrial"
             className="lg:pl-10"
-            delay={120}
           />
         </div>
       </Container>
@@ -39,34 +44,33 @@ export function ServicesOverview({ residential, commercial }: { residential: Pub
   );
 }
 
-function Group({
+function Division({
   title,
+  audience,
+  division,
   services,
   linkLabel,
   linkHref,
   className,
-  delay,
 }: {
   title: string;
+  audience: string;
+  division: "residential" | "commercial";
   services: PublicService[];
   linkLabel: string;
   linkHref: string;
   className?: string;
-  delay?: number;
 }) {
   return (
-    <Reveal className={className} delay={delay}>
+    <div className={className}>
       <h3 className="text-xl font-bold sm:text-[1.4rem]">{title}</h3>
-      <ul className="mt-5 grid grid-cols-2 gap-x-4 gap-y-6 sm:grid-cols-3">
-        {services.slice(0, 3).map((s) => (
-          <li key={s.id}>
-            <ServiceThumb href={s.href || linkHref} title={s.title} image={s.image} alt={s.imageAlt} />
-          </li>
-        ))}
-      </ul>
+      <p className="mt-1 text-sm text-muted">{audience}</p>
+      <div className="mt-5">
+        <GroupCards division={division} services={services} variant="compact" />
+      </div>
       <TextLink href={linkHref} className="mt-7">
         {linkLabel}
       </TextLink>
-    </Reveal>
+    </div>
   );
 }
