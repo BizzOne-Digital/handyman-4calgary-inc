@@ -11,7 +11,8 @@
     "admin:create": "tsx --conditions=react-server scripts/create-admin.ts",
     "cleanup:uploads": "tsx --conditions=react-server scripts/cleanup-uploads.ts",
     "migrate:images": "tsx --conditions=react-server scripts/migrate-images.ts",
-    "migrate:structure": "tsx --conditions=react-server scripts/migrate-structure.ts"
+    "migrate:structure": "tsx --conditions=react-server scripts/migrate-structure.ts",
+    "apply:photos": "tsx --conditions=react-server scripts/apply-client-photos.ts"
   },
   "dependencies": {
     "bcryptjs": "^3.0.3",

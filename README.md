@@ -91,7 +91,7 @@ Admin passwords must be at least 12 characters with letters and numbers. No cred
 - **Logo**: `public/brand/logo.png` was extracted from the design mockup (250×66 px). Upload the original high-resolution logo in Admin → Settings for a sharper result on high-density screens.
 - **Plumbing and electrical**: published as client services, worded to say permit and licensing requirements are confirmed during planning. Confirm who performs regulated work (licensed staff or licensed subcontractors) before adding any licence claims.
 - **Licences, insurance, certifications, warranties, pricing, hours**: none are published. Add only verified information.
-- **Photography**: all 21 initial photographs are AI-generated illustrative images in public/images. They are not completed client projects. Replace with real project photos when available. Original seeded Unsplash image URLs are resolved to the matching local assets without changing custom admin images.
+- **Photography**: 20 real client project photos are in `public/images/projects/` (originals in `assets/client-photos/`) and are used for most residential services, the residential page heroes, the homepage and the gallery. The remaining AI-generated placeholders in `public/images/` are used only where no matching real photo exists yet (most commercial services, exteriors, property maintenance) and are labelled *Illustrative example* in the gallery. `npm run apply:photos` swaps placeholders for real photos without touching admin uploads.
 - **Social links and Google Business Profile**: add in Admin → Settings.
 
 ## Replacing images with real project photos

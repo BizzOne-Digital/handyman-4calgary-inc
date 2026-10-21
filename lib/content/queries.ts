@@ -137,7 +137,7 @@ export async function getServices(division?: Division) {
 }
 
 const defaultProjects = (): PublicProject[] =>
-  DEFAULT_PROJECTS.map((p, i) => ({ ...p, id: `default-${i}`, serviceKey: p.serviceKey ?? "", illustrative: true }));
+  DEFAULT_PROJECTS.map((p, i) => ({ ...p, id: `default-${i}`, serviceKey: p.serviceKey ?? "" }));
 
 const readProjects = unstable_cache(
   async (): Promise<PublicProject[]> => {

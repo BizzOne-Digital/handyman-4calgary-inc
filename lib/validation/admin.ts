@@ -14,7 +14,7 @@ export const imageUrl = z
       v === "" ||
       /^\/api\/uploads\/(products|gallery|pages|misc)\/[0-9]{10,16}-[a-f0-9]{16}\.(png|jpg|webp|gif)$/.test(v) ||
       /^https:\/\/images\.unsplash\.com\/[\w\-./?=&%]+$/.test(v) ||
-      /^\/(brand|images)\/[\w\-.]+$/.test(v),
+      /^\/(brand|images)\/([\w-]+\/)?[\w\-.]+$/.test(v),
     "Use an uploaded image.",
   );
 

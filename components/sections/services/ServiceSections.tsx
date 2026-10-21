@@ -23,7 +23,8 @@ export function ServiceSections({
     <>
       {services.map((s, i) => {
         const mist = (i % 2 === 0) === (startTone === "mist");
-        const photos = projects.filter((p) => p.serviceKey === s.key).slice(0, 3);
+        // Skip the photo already used as the service image, so it is not shown twice.
+        const photos = projects.filter((p) => p.serviceKey === s.key && p.image !== s.image).slice(0, 3);
         const quoteHref = `/request-a-quote?division=${s.division}&service=${s.key}`;
         return (
           <section key={s.id} id={s.key} className={`${mist ? "bg-mist" : "bg-white"} py-14 sm:py-20`} aria-labelledby={`${s.key}-title`}>

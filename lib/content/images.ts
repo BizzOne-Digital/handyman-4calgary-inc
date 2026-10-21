@@ -62,3 +62,28 @@ export function resolveImageUrl(value?: string | null): string {
     return value;
   }
 }
+
+/** Real Handyman 4 Calgary project photos supplied by the client (public/images/projects). */
+const p = (name: string) => `/images/projects/${name}.webp`;
+export const PHOTO = {
+  stairLanding: p("stair-landing-handrail"),
+  woodFraming: p("wood-framing-renovation"),
+  kitchenRange: p("kitchen-range-tile-backsplash"),
+  glassShowerDoor: p("bathroom-glass-shower-door"),
+  commercialFraming: p("commercial-steel-stud-framing"),
+  interiorDoor: p("interior-door-black-hardware"),
+  bathroomShower: p("bathroom-shower-vanity"),
+  basementSuite: p("basement-suite-living-kitchen"),
+  showerGrabBar: p("glass-shower-grab-bar"),
+  showerTile: p("shower-tile-detail"),
+  kitchenMicrowave: p("kitchen-range-microwave"),
+  stairwellGlass: p("stairwell-glass-railing"),
+  vanityFaucet: p("vanity-brass-faucet"),
+  doubleVanity: p("double-vanity-sink"),
+  bathroomTub: p("bathroom-tub-double-vanity"),
+  stairTreads: p("stair-treads"),
+  vanityCabinet: p("vanity-cabinet"),
+  openToBelow: p("open-to-below-iron-railing"),
+  carpetedStairs: p("carpeted-stairs-railing"),
+  bonusRoom: p("bonus-room-glass-railing"),
+} as const;

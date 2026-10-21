@@ -52,8 +52,8 @@ async function main() {
 
   // Gallery examples are only added to an empty gallery, so deleted examples stay deleted.
   if ((await Project.estimatedDocumentCount()) === 0) {
-    await Project.insertMany(DEFAULT_PROJECTS.map((p) => ({ ...p, illustrative: true, status: "published" })));
-    console.log(`Projects: ${DEFAULT_PROJECTS.length} illustrative examples created`);
+    await Project.insertMany(DEFAULT_PROJECTS.map((p) => ({ ...p, status: "published" })));
+    console.log(`Projects: ${DEFAULT_PROJECTS.length} gallery items created`);
   } else {
     console.log("Projects: gallery already has items, skipped");
   }
